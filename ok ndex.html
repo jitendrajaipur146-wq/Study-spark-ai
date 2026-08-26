@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Spark AI</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Arial,sans-serif;
+  background:#f4f7ff;
+  color:#172033;
+}
+header{
+  background:linear-gradient(135deg,#5b2cff,#00a8ff);
+  color:white;
+  padding:22px 18px;
+  border-radius:0 0 25px 25px;
+}
+header h1{font-size:28px}
+header p{margin-top:6px;opacity:.9}
+
+.container{padding:18px;max-width:700px;margin:auto}
+
+.card{
+  background:white;
+  padding:18px;
+  margin-bottom:16px;
+  border-radius:18px;
+  box-shadow:0 5px 18px #00000012;
+}
+
+h2{margin-bottom:12px}
+
+input,textarea,select{
+  width:100%;
+  padding:13px;
+  border:1px solid #ddd;
+  border-radius:12px;
+  margin:7px 0;
+  font-size:15px;
+  outline:none;
+}
+
+button{
+  border:0;
+  padding:13px 18px;
+  border-radius:12px;
+  background:#5b2cff;
+  color:white;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:8px;
+}
+
+button:hover{opacity:.9}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.feature{
+  padding:18px;
+  border-radius:16px;
+  color:white;
+  min-height:110px;
+}
+
+.blue{background:linear-gradient(135deg,#007bff,#00c6ff)}
+.purple{background:linear-gradient(135deg,#6a11cb,#2575fc)}
+.green{background:linear-gradient(135deg,#11998e,#38ef7d)}
+.orange{background:linear-gradient(135deg,#ff8008,#ffc837)}
+
+.feature h3{margin-bottom:8px}
+
+.result{
+  margin-top:12px;
+  background:#f1f4ff;
+  padding:14px;
+  border-radius:12px;
+  line-height:1.6;
+  white-space:pre-line;
+}
+
+.progress{
+  height:12px;
+  background:#e5e7ef;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.progress div{
+  height:100%;
+  width:65%;
+  background:linear-gradient(90deg,#5b2cff,#00a8ff);
+}
+
+footer{
+  text-align:center;
+  padding:25px;
+  color:#777;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>✨ Study Spark AI</h1>
+  <p>Your Smart Study Companion</p>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>👋 Welcome, Student!</h2>
+    <p>Learn smarter, practice better and track your progress.</p>
+    
+    <label>Your Name</label>
+    <input id="name" placeholder="Enter your name">
+
+    <button onclick="saveName()">Save Name</button>
+    <div id="welcome" class="result" style="display:none"></div>
+  </div>
+
+  <div class="grid">
+
+    <div class="feature blue">
+      <h3>📚 Study Notes</h3>
+      <p>Make quick revision notes.</p>
+      <button onclick="showNotes()">Open</button>
+    </div>
+
+    <div class="feature purple">
+      <h3>🧠 AI Helper</h3>
+      <p>Ask your study question.</p>
+      <button onclick="showAI()">Ask</button>
+    </div>
+
+    <div class="feature green">
+      <h3>📝 Quiz</h3>
+      <p>Test your knowledge.</p>
+      <button onclick="showQuiz()">Start</button>
+    </div>
+
+    <div class="feature orange">
+      <h3>⏱️ Study Timer</h3>
+      <p>Focus with a timer.</p>
+      <button onclick="showTimer()">Start</button>
+    </div>
+
+  </div>
+
+  <div class="card" id="notes" style="display:none">
+    <h2>📚 Quick Notes</h2>
+    <input id="subject" placeholder="Subject e.g. Accountancy">
+    <textarea id="note" rows="5" placeholder="Write your notes here..."></textarea>
+    <button onclick="saveNote()">Save Note</button>
+    <div id="noteResult"></div>
+  </div>
+
+  <div class="card" id="ai" style="display:none">
+    <h2>🧠 Study Spark AI</h2>
+    <p>Ask a question:</p>
+    <textarea id="question" rows="4" placeholder="e.g. What is partnership?"></textarea>
+    <button onclick="answerQuestion()">Get Answer</button>
+    <div id="answer" class="result" style="display:none"></div>
+  </div>
+
+  <div class="card" id="quiz" style="display:none">
+    <h2>📝 Mini Quiz</h2>
+    <p><b>Q1. What is the main purpose of studying?</b></p>
+
+    <button onclick="checkQuiz('a')">A. To gain knowledge</button><br>
+    <button onclick="checkQuiz('b')">B. To waste time</button><br>
+    <button onclick="checkQuiz('c')">C. To avoid learning</button>
+
+    <div id="quizResult" class="result" style="display:none"></div>
+  </div>
+
+  <div class="card" id="timer" style="display:none;text-align:center">
+    <h2>⏱️ Focus Timer</h2>
+    <div id="clock" style="font-size:45px;font-weight:bold;margin:20px">
+      25:00
+    </div>
+    <button onclick="startTimer()">▶ Start</button>
+    <button onclick="resetTimer()">↻ Reset</button>
+  </div>
+
+  <div class="card">
+    <h2>📊 Your Progress</h2>
+    <p>Study Progress</p>
+    <div class="progress"><div></div></div>
+    <p style="margin-top:8px">Keep going! 🚀</p>
+  </div>
+
+</div>
+
+<footer>
+  Made with ❤️ for students<br>
+  © 2026 Study Spark AI
+</footer>
+
+<script>
+
+function saveName(){
+  let name=document.getElementById("name").value;
+
+  if(name.trim()==""){
+    alert("Please enter your name");
+    return;
+  }
+
+  localStorage.setItem("studentName",name);
+
+  let w=document.getElementById("welcome");
+  w.style.display="block";
+  w.innerText="Welcome, "+name+"! 🎉 Let's start learning.";
+}
+
+function showNotes(){
+  hideAll();
+  document.getElementById("notes").style.display="block";
+}
+
+function showAI(){
+  hideAll();
+  document.getElementById("ai").style.display="block";
+}
+
+function showQuiz(){
+  hideAll();
+  document.getElementById("quiz").style.display="block";
+}
+
+function showTimer(){
+  hideAll();
+  document.getElementById("timer").style.display="block";
+}
+
+function hideAll(){
+  document.getElementById("notes").style.display="none";
+  document.getElementById("ai").style.display="none";
+  document.getElementById("quiz").style.display="none";
+  document.getElementById("timer").style.display="none";
+}
+
+function saveNote(){
+  let subject=document.getElementById("subject").value;
+  let note=document.getElementById("note").value;
+
+  if(subject=="" || note==""){
+    alert("Please enter subject and notes");
+    return;
+  }
+
+  localStorage.setItem("studyNote",subject+": "+note);
+
+  document.getElementById("noteResult").innerHTML=
+    '<div class="result">✅ Note saved successfully!<br><br><b>'+
+    subject+
+    '</b><br>'+
+    note+
+    '</div>';
+}
+
+function answerQuestion(){
+
+  let q=document.getElementById("question").value;
+
+  if(q.trim()==""){
+    alert("Please type your question");
+    return;
+  }
+
+  let answer=document.getElementById("answer");
+
+  answer.style.display="block";
+
+  answer.innerText=
+  "🤖 Study Spark AI\n\n"+
+  "Your question: "+q+
+  "\n\nThis is the AI Helper section of your Study Spark app. "+
+  "You can connect a real AI API later to generate detailed answers automatically. "+
+  "\n\n💡 Tip: Break difficult topics into small parts and revise them regularly.";
+}
+
+function checkQuiz(option){
+
+  let result=document.getElementById("quizResult");
+  result.style.display="block";
+
+  if(option=="a"){
+    result.innerText="🎉 Correct! Great job.";
+  }else{
+    result.innerText="❌ Incorrect. Try again!";
+  }
+}
+
+let time=1500;
+let timerInterval=null;
+
+function updateClock(){
+
+  let minutes=Math.floor(time/60);
+  let seconds=time%60;
+
+  document.getElementById("clock").innerText=
+    String(minutes).padStart(2,"0")+":"+
+    String(seconds).padStart(2,"0");
+
+  if(time<=0){
+    clearInterval(timerInterval);
+    alert("🎉 Great! Your study session is complete.");
+  }
+}
+
+function startTimer(){
+
+  if(timerInterval) return;
+
+  timerInterval=setInterval(function(){
+
+    if(time>0){
+      time--;
+      updateClock();
+    }
+
+  },1000);
+}
+
+function resetTimer(){
+
+  clearInterval(timerInterval);
+  timerInterval=null;
+  time=1500;
+  updateClock();
+}
+
+window.onload=function(){
+
+  let savedName=localStorage.getItem("studentName");
+
+  if(savedName){
+    document.getElementById("name").value=savedName;
+    document.getElementById("welcome").style.display="block";
+    document.getElementById("welcome").innerText=
+      "Welcome back, "+savedName+"! 👋";
+  }
+
+  updateClock();
+};
+
+</script>
+
+</body>
+</html>
