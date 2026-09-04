@@ -249,15 +249,22 @@ function hideAll(){
   document.getElementById("quiz").style.display="none";
   document.getElementById("timer").style.display="none";
 }
-
 function saveNote(){
-  let subject=document.getElementById("subject").value;
-  let note=document.getElementById("note").value;
+  let subject=document.getElementById("subject").value.trim();
+  let note=document.getElementById("note").value.trim();
+  let result=document.getElementById("noteResult");
 
-  i
-        })
-      }
-    );
+  if(!subject || !note){
+    result.style.display="block";
+    result.innerText="Please enter subject and note.";
+    return;
+  }
+
+  localStorage.setItem("studyNote_"+subject,note);
+  result.style.display="block";
+  result.innerText="✅ Note saved successfully!";
+}
+
 async function answerQuestion(){
 
   const question = document.getElementById("question").value.trim();
